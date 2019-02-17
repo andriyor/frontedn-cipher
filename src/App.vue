@@ -47,6 +47,7 @@
           <v-flex xs4>
             <v-select
                     :items="items"
+                    v-model="celectedCipher"
                     label="Оберіть шифр"
             ></v-select>
             <v-container fluid>
@@ -106,7 +107,17 @@ export default {
 
   },
   data: () => ({
-    items: ['Абаш', 'Цезаря'],
+    items: [
+        {
+            'text': 'Абаш',
+            'value': 'atbash'
+        },
+        {
+            'text': 'Цезаря',
+            'value': 'caesar'
+        }
+    ],
+    celectedCipher: '',
     radios: 'radio-1',
     input: '',
     output: '',
@@ -114,14 +125,25 @@ export default {
   }),
   methods: {
     greet() {
-      fetch(`atbash?text=${this.input}`)
-        .then(function(response) {
-          return response.json();
-        })
-        .then(json => {
-            this.output = json.name;
-        })
-        .catch(err => console.error(err));
+      if (this.celectedCipher === this.items[0].value) {
+        fetch(`atbash?text=${this.input}`)
+          .then(function(response) {
+              return response.json();
+          })
+          .then(json => {
+              this.output = json.text;
+          })
+          .catch(err => console.error(err));
+      } else if (this.celectedCipher === this.items[1].value) {
+        fetch(`caesar?text=${this.input}&key=3`)
+          .then(function(response) {
+              return response.json();
+          })
+          .then(json => {
+              this.output = json.text;
+          })
+          .catch(err => console.error(err));
+      }
     },
 
     cleanInput() {
