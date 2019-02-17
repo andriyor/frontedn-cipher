@@ -28,15 +28,17 @@
               name="input-7-1"
               label="Input"
               value=""
+              v-model="input"
               hint="input"
             ></v-textarea>
           </v-flex>
           <v-flex xs6>
             <v-textarea
-                    name="input-7-1"
-                    label="Output"
-                    value=""
-                    hint="output"
+              name="input-7-1"
+              label="Output"
+              value=""
+              v-model="output"
+              hint="output"
             ></v-textarea>
           </v-flex>
         </v-layout>
@@ -60,7 +62,7 @@
           <v-flex xs4>
             <v-checkbox v-model="checkbox" label="Завжди очищати результат"></v-checkbox>
             <div>
-              <v-btn color="success">Застосувати
+              <v-btn color="success" v-on:click="greet">Застосувати
                 <v-icon right dark>arrow_right_alt</v-icon>
               </v-btn>
             </div>
@@ -106,7 +108,19 @@ export default {
   data: () => ({
     items: ['Абаш', 'Цезаря'],
     radios: 'radio-1',
+    input: '',
+    output: '',
     checkbox: true,
-  })
+  }),
+  methods: {
+    greet() {
+      fetch(`atbash?text=${this.input}`)
+        .then(function(response) {
+          const json = response.json();
+          return  this.output = json.name;
+        })
+        .catch(err => console.error(err));
+    }
+  }
 }
 </script>
