@@ -10,7 +10,7 @@
       <v-container grid-list-md text-xs-center>
         <v-layout row wrap>
           <v-flex xs4>
-            <v-btn color="success">button1</v-btn>
+            <v-btn color="success" v-on:click="cleanInput">Очистити</v-btn>
           </v-flex>
           <v-flex xs4>
             <v-btn color="success">Обернути
@@ -18,7 +18,7 @@
             </v-btn>
           </v-flex>
           <v-flex xs4>
-            <v-btn color="success">button2</v-btn>
+            <v-btn color="success" v-on:click="cleanOutput">Очистити</v-btn>
           </v-flex>
         </v-layout>
 
@@ -116,10 +116,20 @@ export default {
     greet() {
       fetch(`atbash?text=${this.input}`)
         .then(function(response) {
-          const json = response.json();
-          return  this.output = json.name;
+          return response.json();
+        })
+        .then(json => {
+            this.output = json.name;
         })
         .catch(err => console.error(err));
+    },
+
+    cleanInput() {
+        this.input = '';
+    },
+
+    cleanOutput() {
+        this.output = '';
     }
   }
 }
