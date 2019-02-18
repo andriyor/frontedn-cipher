@@ -51,11 +51,17 @@
                     label="Оберіть шифр"
             ></v-select>
             <v-container fluid>
-              <p>Дія</p>
-              <v-radio-group v-model="radios" :mandatory="false">
-                <v-radio label="Шифрувати" value="radio-1"></v-radio>
-                <v-radio label="Розшифрувати" value="radio-2"></v-radio>
-              </v-radio-group>
+              <div v-if="celectedCipher === items[1].value">
+                <v-text-field
+                  label="Значення ключа"
+                  v-model="key"
+                ></v-text-field>
+                <p>Дія</p>
+                <v-radio-group v-model="radios" :mandatory="false">
+                  <v-radio label="Шифрувати" value="true"></v-radio>
+                  <v-radio label="Розшифрувати" value="false"></v-radio>
+                </v-radio-group>
+              </div>
             </v-container>
 
           </v-flex>
@@ -121,6 +127,7 @@ export default {
     radios: 'radio-1',
     input: '',
     output: '',
+    key: '',
     checkbox: true,
   }),
   methods: {
@@ -135,7 +142,7 @@ export default {
           })
           .catch(err => console.error(err));
       } else if (this.celectedCipher === this.items[1].value) {
-        fetch(`caesar?text=${this.input}&key=3`)
+        fetch(`caesar?text=${this.input}&key=${this.key}&encrypt=${this.radios}`)
           .then(function(response) {
               return response.json();
           })
