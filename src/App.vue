@@ -13,7 +13,7 @@
             <v-btn color="success" v-on:click="cleanInput">Очистити</v-btn>
           </v-flex>
           <v-flex xs4>
-            <v-btn color="success">Обернути
+            <v-btn color="success" v-on:click="reverse">Обернути
               <v-icon right dark>compare_arrows</v-icon>
             </v-btn>
           </v-flex>
@@ -159,6 +159,10 @@ export default {
 
     cleanOutput() {
         this.output = '';
+    },
+
+    reverse(){
+        [this.input, this.output] = [this.output, this.input]
     }
   }
 }
