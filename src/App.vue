@@ -93,7 +93,7 @@
               </v-btn>
             </div>
             <div>
-              <v-btn color="success">зберегти результат в файл
+              <v-btn color="success" v-on:click="download">зберегти результат в файл
                 <v-icon right dark>save</v-icon>
               </v-btn>
             </div>
@@ -163,6 +163,19 @@ export default {
 
     reverse(){
         [this.input, this.output] = [this.output, this.input]
+    },
+
+    download() {
+      const content = {output: this.output};
+      const data = JSON.stringify(content);
+      const blob = new Blob([data], {type: 'text/plain'});
+      const e = document.createEvent('MouseEvents');
+      const a = document.createElement('a');
+      a.download = "test.json";
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+      e.initEvent('click');
+      a.dispatchEvent(e);
     }
   }
 }
