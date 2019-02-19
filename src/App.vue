@@ -88,9 +88,7 @@
               <v-icon right dark>save_alt</v-icon>
             </v-btn>
             <div>
-              <v-btn color="success">Відкрити з файлу
-                <v-icon right dark>attachment</v-icon>
-              </v-btn>
+              <input type="file" v-on:change="openFromFile">
             </div>
             <div>
               <v-btn color="success" v-on:click="download">зберегти результат в файл
@@ -166,16 +164,23 @@ export default {
     },
 
     download() {
-      const content = {output: this.output};
-      const data = JSON.stringify(content);
-      const blob = new Blob([data], {type: 'text/plain'});
+      const blob = new Blob([this.output], {type: 'text/plain'});
       const e = document.createEvent('MouseEvents');
       const a = document.createElement('a');
-      a.download = "test.json";
+      a.download = "output.txt";
       a.href = window.URL.createObjectURL(blob);
       a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
       e.initEvent('click');
       a.dispatchEvent(e);
+    },
+
+    openFromFile(event) {
+        const files = event.target.files;
+        const fr = new FileReader ();
+        fr.readAsBinaryString(files[0]);
+        fr.onload = (e) => {
+            this.input = e.target.result;
+        };
     }
   }
 }
