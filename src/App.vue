@@ -88,7 +88,7 @@
               <v-icon right dark>save_alt</v-icon>
             </v-btn>
             <div>
-              <input type="file" v-on:change="openFromFile">
+              <upload-btn title="Відкрити з файлу" :fileChangedCallback="openFromFile"></upload-btn>
             </div>
             <div>
               <v-btn color="success" v-on:click="download">зберегти результат в файл
@@ -104,10 +104,12 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld'
+import UploadButton from 'vuetify-upload-button';
 
 export default {
   name: 'App',
   components: {
+      'upload-btn': UploadButton
 
   },
   data: () => ({
@@ -174,10 +176,9 @@ export default {
       a.dispatchEvent(e);
     },
 
-    openFromFile(event) {
-        const files = event.target.files;
+    openFromFile(file) {
         const fr = new FileReader ();
-        fr.readAsBinaryString(files[0]);
+        fr.readAsBinaryString(file);
         fr.onload = (e) => {
             this.input = e.target.result;
         };
